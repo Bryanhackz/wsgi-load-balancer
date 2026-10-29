@@ -1,24 +1,16 @@
 # Security Policy
 
 ## Supported Versions
-Currently, only the latest `main` branch is supported with security updates.
+Currently, only the latest `main` branch is supported.
+
+## Scope
+This is a reverse proxy and load balancer. The primary security focus is on preventing HTTP request smuggling, header injection, and ensuring that backend health checks cannot be spoofed to route traffic maliciously. It assumes the backend servers are in a trusted internal network.
 
 ## Reporting a Vulnerability
-If you believe you have found a security vulnerability in any of our repositories, please report it privately.
+Please do not report security vulnerabilities through public GitHub issues. Send an email to **br4yangil006@gmail.com**. You should receive a response within 48 hours.
 
-**Please do not report security vulnerabilities through public GitHub issues.**
-
-Instead, please send an email to your-email@example.com. 
-
-You should receive a response within 48 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
-
-Please include the following information in your report:
-- Type of issue (e.g., buffer overflow, SQL injection, cross-site scripting, etc.)
-- Full paths of source file(s) related to the manifestation of the issue
-- The location of the affected source code (tag/branch/commit or direct URL)
-- Any special configuration required to reproduce the issue
+Please include:
+- Type of issue (e.g., request smuggling, SSRF via backend URL, header injection)
+- Full paths of source file(s) related to the issue
 - Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact of the issue, including how an attacker might exploit the issue
-
-This information will help us triage your report more quickly.
+- Impact of the issue
