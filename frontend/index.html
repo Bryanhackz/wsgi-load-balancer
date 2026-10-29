@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Load Balancer Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <h1>Traffic Controller</h1>
+    </header>
+    <main class="container">
+        <h2>Backend Status</h2>
+        <div id="backend-list" class="grid"></div>
+        <div class="actions">
+            <p>Send traffic through the load balancer (Port 8080).</p>
+            <a href="/app" target="_blank" class="btn">Generate Traffic (Proxied)</a>
+        </div>
+    </main>
+    <script src="/main.js"></script>
+</body>
+</html>

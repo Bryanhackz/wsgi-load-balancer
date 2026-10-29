@@ -1,0 +1,10 @@
+:root { --bg: #0f172a; --surface: #1e293b; --text: #f8fafc; --accent: #3b82f6; --error: #ef4444; --ok: #10b981; }
+body { background: var(--bg); color: var(--text); font-family: system-ui; margin: 0; }
+.navbar { padding: 1.5rem; background: var(--surface); border-bottom: 1px solid #334155; }
+.container { max-width: 800px; margin: 3rem auto; padding: 0 1rem; }
+.grid { display: grid; gap: 1rem; margin-top: 1rem; }
+.card { background: var(--surface); padding: 1.5rem; border-radius: 8px; border: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+.status-ok { color: var(--ok); font-weight: bold; }
+.status-dead { color: var(--error); font-weight: bold; }
+.actions { margin-top: 3rem; text-align: center; }
+.btn { display: inline-block; margin-top: 1rem; padding: 0.8rem 1.5rem; background: var(--accent); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }
