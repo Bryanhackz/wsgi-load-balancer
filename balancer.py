@@ -3,9 +3,13 @@ import urllib.parse
 import threading
 from db import get_healthy_backends
 
-# Thread-safe Round Robin counter
 _lock = threading.Lock()
 _current_index = 0
+
+ALLOWED_HEADERS = {
+    "HTTP_ACCEPT", "HTTP_ACCEPT_ENCODING", "HTTP_ACCEPT_LANGUAGE",
+    "HTTP_USER_AGENT", "HTTP_AUTHORIZATION", "CONTENT_TYPE", "CONTENT_LENGTH"
+}
 
 def get_next_backend() -> str | None:
     global _current_index
@@ -31,7 +35,6 @@ def forward_request(environ: dict, backend_url: str) -> tuple[str, list[tuple[st
     if query:
         path += f"?{query}"
 
-    # Read body if present
     body = b""
     try:
         content_length = int(environ.get("CONTENT_LENGTH", 0))
@@ -40,13 +43,11 @@ def forward_request(environ: dict, backend_url: str) -> tuple[str, list[tuple[st
     except ValueError:
         pass
 
-    # Reconstruct headers
     headers = {}
     for key, value in environ.items():
-        if key.startswith("HTTP_"):
-            headers[key[5:].replace("_", "-")] = value
-        elif key in ("CONTENT_TYPE", "CONTENT_LENGTH"):
-            headers[key.replace("_", "-")] = value
+        if key in ALLOWED_HEADERS:
+            header_name = key[5:].replace("_", "-") if key.startswith("HTTP_") else key.replace("_", "-")
+            headers[header_name] = value
 
     try:
         conn.request(method, path, body=body, headers=headers)
@@ -55,7 +56,7 @@ def forward_request(environ: dict, backend_url: str) -> tuple[str, list[tuple[st
         
         resp_headers = []
         for k, v in response.getheaders():
-            if k.lower() not in ("connection", "transfer-encoding"):
+            if k.lower() not in ("connection", "transfer-encoding", "content-length"):
                 resp_headers.append((k, v))
                 
         return f"{response.status} {response.reason}", resp_headers, resp_body
