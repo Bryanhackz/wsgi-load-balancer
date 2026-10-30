@@ -1,14 +1,19 @@
 import sqlite3
-import time
+from contextlib import contextmanager
 from pathlib import Path
+import time
 
 DB_PATH = Path(__file__).resolve().parent / "lb.db"
 
-def get_connection() -> sqlite3.Connection:
+@contextmanager
+def get_connection():
     conn = sqlite3.connect(DB_PATH, timeout=5.0)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL;")
-    return conn
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 def init_db() -> None:
     with get_connection() as conn:
@@ -20,7 +25,6 @@ def init_db() -> None:
                 last_checked REAL NOT NULL
             )
         """)
-        # Register default backends (ignore if they already exist)
         defaults = [
             ("http://127.0.0.1:8001", 1, time.time()),
             ("http://127.0.0.1:8002", 1, time.time()),
